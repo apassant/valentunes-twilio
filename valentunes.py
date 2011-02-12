@@ -14,12 +14,11 @@ urls = (
 
 class Caller:
     
-    def call(self):
+    def call(self, args):
         
-        ## @@FIXME : Get parameters from the URL
-        _to = 'Julie'
-        _from = 'Alex'
-        _phone = config.CALLER_ID
+        _to = args._to
+        _from = args._from
+        _phone = config._phone
 
         _voice = twilio.Say.MAN
         _lang = twilio.Say.ENGLISH
@@ -47,12 +46,13 @@ class Caller:
             'Url' : config.ROOT + "/data/%s" %name,
         }
         try:
-            print account.request('/%s/Accounts/%s/Calls' %(config.API_VERSION, config.ACCOUNT_SID), 'POST', d)
+            request = account.request('/%s/Accounts/%s/Calls' %(config.API_VERSION, config.ACCOUNT_SID), 'POST', d)
         except Exception, e:
             print e
             print e.read()
 
     def GET(self):
-        return self.call()
+        args = web.input()
+        return self.call(args)
 
 application = web.application(urls, globals()).wsgifunc()
