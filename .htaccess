@@ -1,0 +1,4 @@
+<Files valentunes.py>
+    SetHandler wsgi-script
+    Options ExecCGI FollowSymLinks
+</Files>
