@@ -1,5 +1,10 @@
-import twilio
 import uuid
+import sys
+
+path ='/var/www/html/mhd/valentunes-twilio'
+sys.path.append("%s/" %path)
+
+import twilio
 import config
 
 ## HOW-TO
@@ -25,7 +30,7 @@ r.addPlay(_song)
 
 ## Save message file
 name = uuid.uuid4()
-f = open("./data/%s" %name, 'w')
+f = open("%s/data/%s" %(path, name), 'w')
 f.write('<?xml version="1.0" encoding="UTF-8" ?>\n %s' %r)
 f.close()
 
