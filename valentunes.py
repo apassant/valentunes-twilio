@@ -26,7 +26,7 @@ r.addPlay(_song)
 ## Save message file
 name = uuid.uuid4()
 f = open("./data/%s" %name, 'w')
-f.write("%s" %r)
+f.write('<?xml version="1.0" encoding="UTF-8" ?>\n %s' %r)
 f.close()
 
 ## Ring the phone
