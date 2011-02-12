@@ -34,7 +34,7 @@ account = twilio.Account(config.ACCOUNT_SID, config.ACCOUNT_TOKEN)
 d = {
     'From' : config.CALLER_ID,
     'To' : _phone,
-    'Url' : config.ROOT + "data/%s" %name,
+    'Url' : config.ROOT + "/data/%s" %name,
 }
 try:
     print account.request('/%s/Accounts/%s/Calls' %(config.API_VERSION, config.ACCOUNT_SID), 'POST', d)
