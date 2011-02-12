@@ -1,7 +1,7 @@
 import uuid
 import sys
 
-path ='CURRENT_PATH_GOES_HERE'
+path = os.path.dirname(__file__)
 sys.path.append("%s/" %path)
 
 import twilio
