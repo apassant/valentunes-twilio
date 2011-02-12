@@ -18,7 +18,7 @@ class Caller:
         
         _to = args._to
         _from = args._from
-        _phone = config._phone
+        _phone = args._phone
 
         _voice = twilio.Say.MAN
         _lang = twilio.Say.ENGLISH
