@@ -16,13 +16,19 @@ class Caller:
     
     def call(self, args):
         
+        ## Get mandatory parameters
         _to = args._to
         _from = args._from
         _phone = args._phone
+
+        ## Get song URL
+        if '_song' in args.keys():
+            _song = args._song
+        else:
+            _song = config.DEFAULT_SONG
         
         _voice = twilio.Say.MAN
         _lang = twilio.Say.ENGLISH
-        _song = config.DEFAULT_SONG
 
         ## Generate twilio message
         r = twilio.Response()
