@@ -54,11 +54,11 @@ class Caller:
     def GET(self):
         args = web.input()
         ## Check reuired parameters
-        if _to not in args.keys():
+        if '_to' not in args.keys():
             return "_to parameter required (name of the person you want to call)"
-        if _from not in args.keys():
+        if '_from'' not in args.keys():
             return "_from parameter required (your name)"
-        if _phone not in args.keys():
+        if '_phone' not in args.keys():
             return "_phone parameter required (phone number to ring)"
         ## Go !
         return self.call(args)
