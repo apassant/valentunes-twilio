@@ -1,7 +1,7 @@
 import uuid
 import sys
 
-path ='/var/www/html/mhd/valentunes-twilio'
+path ='CURRENT_PATH_GOES_HERE'
 sys.path.append("%s/" %path)
 
 import twilio
