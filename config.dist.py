@@ -10,7 +10,3 @@ CALLER_ID = 'USE_YOUR_NUMBER';
 
 # Root folder of your webservice
 ROOT = 'EDIT_THIS'
-
-# Default song
-DEFAULT_SONG = 'EDIT_THIS'
-DEFAULT_SONG_TITLE = 'EDIT_THIS'
