@@ -36,14 +36,30 @@ class Valentunes:
         ## Phone number
         self._phone = args._phone
 
-        ## Message
-        message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
+        ## Lang and default message
+        if '_lang' in args.keys():
+            if args._lang == 'es':
+                self._lang = twilio.Say.SPANISH
+                ## Translate in spanish
+                message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
+            if args._lang == 'fr':
+                self._lang = twilio.Say.FRENCH
+                message = "Salut %s, c'est %s. Voila quelques chansons pour toi, bonne Saint-Valentin !" %(args._to, args._from)
+            if args._lang == 'de':
+                self._lang = twilio.Say.GERMAN
+                ## Translate in german
+                message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
+        else:
+            self._lang = twilio.Say.ENGLISH
+            message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
+
+        ## Additional message
         if '_msg' in args.keys():
             self._message = "%s %s" %(message, args._msg)
         else:
             self._message = message
         
-        ## Song (5 max)
+        ## Songs (5 max)
         if '_songs' in args.keys():
             self._songs = args._songs
             if len(self._songs) > 5:
@@ -60,17 +76,6 @@ class Valentunes:
                 self._voice = twilio.Say.WOMAN
         else:
             self._voice = twilio.Say.MAN
-
-        ## Lang
-        if '_lang' in args.keys():
-            if args._lang == 'es':
-                self._lang = twilio.Say.ENGLISH
-            if args._lang == 'fr':
-                self._lang = twilio.Say.FRENCH
-            if args._lang == 'de':
-                self._lang = twilio.Say.GERMAN
-        else:
-            self._lang = twilio.Say.ENGLISH
                 
     def call(self):
         global path
