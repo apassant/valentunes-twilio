@@ -32,56 +32,52 @@ class Switcher:
     
 class Valentunes:
     
-    def __init__(self, args):
+    def __init__(self, _from, _to, _songs, _phone, **kwargs):
+        
         ## Phone number
-        self._phone = args._phone
+        self._phone = _phone
+
+        ## Songs (5 max)
+        self._songs = _songs
+        if len(self._songs) > 5:
+            self._songs = self._songs[:5]
 
         ## Lang and default message
-        if '_lang' in args.keys():
-            if args._lang == 'es':
+        if '_lang' in kwargs.keys():
+            if kwargs._lang == 'es':
                 self._lang = twilio.Say.SPANISH
                 ## Translate in spanish
-                message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
+                message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(_to, _from)
                 self._menu = "Type their number to listen them, 9 to listen to the list again, or 0 for the introduction."
-            if args._lang == 'fr':
+            if kwargs._lang == 'fr':
                 self._lang = twilio.Say.FRENCH
-                message = "Salut %s, c'est %s. Voila quelques chansons pour toi, bonne Saint-Valentin !" %(args._to, args._from)
+                message = "Salut %s, c'est %s. Voila quelques chansons pour toi, bonne Saint-Valentin !" %(_to, _from)
                 self._menu = "Tape leur numero pour les ecouter, 9 pour re-ecouter la liste, ou 0 pour l'introduction."
-            if args._lang == 'de':
+            if kwargs._lang == 'de':
                 self._lang = twilio.Say.GERMAN
                 ## Translate in german
-                message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
+                message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(_to, _from)
                 self._menu = "Type their number to listen them, 9 to listen to the list again, or 0 for the introduction."
         else:
             self._lang = twilio.Say.ENGLISH
-            message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
+            message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(_to, _from)
             self._menu = "Type their number to listen them, 9 to listen to the list again, or 0 for the introduction."
             
         ## Additional message
-        if '_msg' in args.keys():
-            self._message = "%s %s" %(message, args._msg)
+        if '_msg' in kwargs.keys():
+            self._message = "%s %s" %(message, kwargs._msg)
         else:
             self._message = message
-        
-        ## Songs (5 max)
-        if '_songs' in args.keys():
-            self._songs = args._songs
-            if len(self._songs) > 5:
-                self._songs = self._songs[:5]
-        else:
-            self._songs = [
-                (config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG),
-                (config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG),
-            ]
-        
+                
         ## Voice
-        if '_voice' in args.keys():
-            if args._voice == 'woman':
+        if '_voice' in kwargs.keys():
+            if kwargs._voice == 'woman':
                 self._voice = twilio.Say.WOMAN
         else:
             self._voice = twilio.Say.MAN
                 
     def call(self):
+        
         global path
         
         ## Generate uniqid

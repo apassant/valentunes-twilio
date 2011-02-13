@@ -32,8 +32,14 @@ class Call:
             return "_from parameter required (your name)"
         if '_phone' not in args.keys():
             return "_phone parameter required (phone number to ring)"
+        ## No songs ?        
+        if '_songs' not in args.keys():
+            songs = [(config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG),
+                       (config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG)]
+        else:
+            songs = args._songs
         ## Go !
-        val = valentunes.Valentunes(args)
+        val = valentunes.Valentunes(args._from, args._to, args._phone, songs, args)
         val.call()
 
 application = web.application(urls, globals()).wsgifunc()
