@@ -21,6 +21,10 @@ class Caller:
         _from = args._from
         _phone = args._phone
 
+        ## Custom message
+        if '_msg' in args.keys():
+            _msg = args._phone
+
         ## Song
         if '_song' in args.keys():
             _song = args._song
@@ -48,10 +52,13 @@ class Caller:
 
         ## Generate Twilio message
         r = twilio.Response()
-        r.addSay("Hello %s, this is %s. I got a song for you, happy Valentine's day !" %(_to, _from), 
-            voice = _voice, 
+        message = "Hello %s, this is %s. Here is a song for you, happy Valentine's day !" %(_to, _from)
+        if _msg:
+            message = "%s %s" %(message, _msg)
+        r.addSay(message,
+            voice = _voice,
             language = _lang,
-            )
+        )
         r.addPlay(_song)
 
         ## Save message file
@@ -75,7 +82,7 @@ class Caller:
 
     def GET(self):
         args = web.input()
-        ## Check reuired parameters
+        ## Check required parameters
         if '_to' not in args.keys():
             return "_to parameter required (name of the person you want to call)"
         if '_from' not in args.keys():
