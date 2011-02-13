@@ -164,8 +164,8 @@ class Valentunes:
             'To' : self._phone,
             'Url' : config.ROOT + "/data/%s" %uid,
         }
-#        try:
- #           request = account.request('/%s/Accounts/%s/Calls' %(config.API_VERSION, config.ACCOUNT_SID), 'POST', d)
-  #      except Exception, e:
-   #         print e
-    #        print e.read()
+        try:
+            request = account.request('/%s/Accounts/%s/Calls' %(config.API_VERSION, config.ACCOUNT_SID), 'POST', d)
+        except Exception, e:
+            print e
+            print e.read()
