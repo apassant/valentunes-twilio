@@ -24,9 +24,9 @@ class Switcher:
             if os.path.exists(_file):
                 f = open(_file, 'r')
             else:
-                f = open("%s-menu" %(root, self._uid), 'r')
+                f = open("%s-menu" %root, 'r')
         else:
-            f = open("%s-menu" %(root, self._uid), 'r')
+            f = open("%s-menu" %root, 'r')
         web.header("Content-Type","text/html; charset=utf-8")
         return ''.join(f.readlines())
     
