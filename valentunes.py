@@ -76,7 +76,7 @@ class Valentunes:
         uid = uuid.uuid4()
 
         ## Header including change settings
-        head = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" %uid
+        head = "<?xml version='1.0' encoding='utf-8' ?>\n" %uid
         
         ## Generate intro message
         r = twilio.Response()
