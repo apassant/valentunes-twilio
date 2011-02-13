@@ -94,7 +94,7 @@ class Valentunes:
             language = self._lang,
         )
         r.addRedirect(
-            config.ROOT + '/cgi.py/change?_uid=%s&Digits=*' %uid,
+            config.ROOT + '/cgi.py/change?_uid=%s&amp;Digits=*' %uid,
         )
         f = open("%s/data/%s" %(path, uid), 'w')
         f.write('%s%s' %(head, r))
@@ -112,7 +112,7 @@ class Valentunes:
             method = 'GET'
         ).append(
             twilio.Say(
-                "%settings. Type a number to listen them, star to go back to the list or 0 for the introduction." %listing,
+                "%settings. Type their number to listen them, 9 to listen to the list again, or 0 for the introduction." %listing,
                 voice = self._voice,
                 language = self._lang,
             )
