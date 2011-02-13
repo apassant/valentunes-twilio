@@ -26,6 +26,7 @@ class Call:
     
     def GET(self):
         args = web.input()
+
         ## Check required parameters
         if '_to' not in args.keys():
             return "_to parameter required (name of the person you want to call)"
@@ -33,14 +34,23 @@ class Call:
             return "_from parameter required (your name)"
         if '_phone' not in args.keys():
             return "_phone parameter required (phone number to ring)"
-        ## No songs ?        
+
+        ## No songs ?
         if '_songs' not in args.keys():
             songs = [(config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG),
                        (config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG)]
         else:
             songs = args._songs
+
+        ## Additional parameters
+        options = {}
+        if '_msg' in args.keys():
+            options['_msg'] = args._msg
+        if '_voice' in args.keys():
+            options['_voice'] = args._voice
+
         ## Go !
-        val = valentunes.Valentunes(args._from, args._to, songs, args._phone, args)
-        val.call()
+        val = valentunes.Valentunes(args._phone, songs, args._from, args._to, options = options)
+        return val.call()
 
 application = web.application(urls, globals()).wsgifunc()
