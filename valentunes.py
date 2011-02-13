@@ -81,7 +81,7 @@ class Valentunes:
         ## Generate intro message
         r = twilio.Response()
         r.addGather(
-            action = '/change?_uid=%s' %uid,
+            action = config.ROOT + '/cgi.py/change?_uid=%s' %uid,
             method = 'GET'
         ).append(
             twilio.Say(
@@ -97,7 +97,7 @@ class Valentunes:
         ## Generate menu message
         r = twilio.Response()
         r.addGather(
-            action = '/change?_uid=%s' %uid,
+            action = config.ROOT + '/cgi.py/change?_uid=%s' %uid,
             method = 'GET'
         ).append(
             twilio.Say(
@@ -115,14 +115,10 @@ class Valentunes:
         for s in self._songs:
             r = twilio.Response()
             r.addGather(
-                action = '/change?_uid=%s' %uid,
+                action = config.ROOT + '/cgi.py/change?_uid=%s' %uid,
                 method = 'GET'
             ).append(
-                twilio.Say(
-                    "This is a song",
-                    voice = self._voice,
-                    language = self._lang,
-                )
+                twilio.Play(s)
             )
             f = open("%s/data/%s-%s" %(path, uid, i), 'w')
             f.write('%s%s' %(head, r))
