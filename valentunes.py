@@ -42,17 +42,21 @@ class Valentunes:
                 self._lang = twilio.Say.SPANISH
                 ## Translate in spanish
                 message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
+                self._menu = "Type their number to listen them, 9 to listen to the list again, or 0 for the introduction."
             if args._lang == 'fr':
                 self._lang = twilio.Say.FRENCH
                 message = "Salut %s, c'est %s. Voila quelques chansons pour toi, bonne Saint-Valentin !" %(args._to, args._from)
+                self._menu = "Tape leur numero pour les ecouter, 9 pour re-ecouter la liste, ou 0 pour l'introduction."
             if args._lang == 'de':
                 self._lang = twilio.Say.GERMAN
                 ## Translate in german
                 message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
+                self._menu = "Type their number to listen them, 9 to listen to the list again, or 0 for the introduction."
         else:
             self._lang = twilio.Say.ENGLISH
             message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
-
+            self._menu = "Type their number to listen them, 9 to listen to the list again, or 0 for the introduction."
+            
         ## Additional message
         if '_msg' in args.keys():
             self._message = "%s %s" %(message, args._msg)
@@ -113,7 +117,7 @@ class Valentunes:
             timeout = 10
         ).append(
             twilio.Say(
-                "%s Type their number to listen them, 9 to listen to the list again, or 0 for the introduction." %listing,
+                "%s %s" %(listing, self._menu),
                 voice = self._voice,
                 language = self._lang,
             )
