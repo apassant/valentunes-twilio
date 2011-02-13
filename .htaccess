@@ -1,4 +1,4 @@
-<Files valentunes.py>
+<Files cgi.py>
     SetHandler wsgi-script
     Options ExecCGI FollowSymLinks
 </Files>
