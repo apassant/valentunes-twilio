@@ -5,6 +5,7 @@ path = os.path.dirname(__file__)
 sys.path.append("%s/" %path)
 
 import valentunes
+import config
 
 urls = (
     '/call', 'Call',
