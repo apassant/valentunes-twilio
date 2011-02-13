@@ -76,14 +76,19 @@ class Valentunes:
         uid = uuid.uuid4()
 
         ## Header including change settings
-        head = "<?xml version='1.0' encoding='UTF-8' ?>\n<Gather action='/change?_uid=%s' method='GET'>\n" %uid
+        head = "<?xml version='1.0' encoding='UTF-8' ?>\n" %uid
         
         ## Generate intro message
         r = twilio.Response()
-        r.addSay(
-            self._message,
-            voice = self._voice,
-            language = self._lang,
+        r.addGather(
+            action = '/change?_uid=%s' %uid,
+            method = 'GET'
+        ).append(
+            twilio.Say(
+                self._message,
+                voice = self._voice,
+                language = self._lang,
+            )
         )
         f = open("%s/data/%s" %(path, uid), 'w')
         f.write('%s%s</Gather>' %(head, r))
@@ -91,10 +96,15 @@ class Valentunes:
 
         ## Generate menu message
         r = twilio.Response()
-        r.addSay(
-            "This is a menu",
-            voice = self._voice,
-            language = self._lang,
+        r.addGather(
+            action = '/change?_uid=%s' %uid,
+            method = 'GET'
+        ).append(
+            twilio.Say(
+                "This is a menu",
+                voice = self._voice,
+                language = self._lang,
+            )
         )
         f = open("%s/data/%s-menu" %(path, uid), 'w')
         f.write('%s%s</Gather>' %(head, r))        
@@ -104,10 +114,15 @@ class Valentunes:
         i = 1
         for s in self._songs:
             r = twilio.Response()
-            r.addSay(
-                "This is a song",
-                voice = self._voice,
-                language = self._lang,
+            r.addGather(
+                action = '/change?_uid=%s' %uid,
+                method = 'GET'
+            ).append(
+                twilio.Say(
+                    "This is a song",
+                    voice = self._voice,
+                    language = self._lang,
+                )
             )
             f = open("%s/data/%s-%s" %(path, uid, i), 'w')
             f.write('%s%s</Gather>' %(head, r))
