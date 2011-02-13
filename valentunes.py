@@ -16,9 +16,9 @@ class Valentunes:
         ## Message
         message = "Hello %s, this is %s. Here is a song for you, happy Valentine's day !" %(args._to, args._from)
         if '_msg' in args.keys():
-            self._msg = "%s %s" %(message, args._msg)
+            self._message = "%s %s" %(message, args._msg)
         else:
-            self._msg = message
+            self._message = message
         
         ## Song
         if '_song' in args.keys():
