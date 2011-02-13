@@ -22,7 +22,7 @@ class Caller:
         if '_phone' not in args.keys():
             return "_phone parameter required (phone number to ring)"
         ## Go !
-        val = valentunes.Valentune(args)
+        val = valentunes.Valentunes(args)
         val.call()
 
 application = web.application(urls, globals()).wsgifunc()
