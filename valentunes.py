@@ -7,6 +7,26 @@ sys.path.append("%s/" %path)
 import twilio
 import config
 
+class Switcher:
+    
+    def __init__(self, args):
+        self._uid = args._uid
+        self._digit = args.Digits
+        
+    def go(self):
+        global path
+        if self._digit == '0':
+            f = open("%s/data/%s" %(path, self._uid), 'r')
+        elif self._digit in ['1', '2', '3', '4', '5']:
+            _file = "%s/data/%s-%s" %(path, self._uid, self._digit)
+            if os.path.exists(_file):
+                f = open(_file, 'r')
+            else:
+                f = open("%s/data/%s-menu" %(path, self._uid), 'r')
+        else:
+            f = open("%s/data/%s-menu" %(path, self._uid), 'r')
+        return ''.join(f.readlines())
+    
 class Valentunes:
     
     def __init__(self, args):
@@ -20,11 +40,16 @@ class Valentunes:
         else:
             self._message = message
         
-        ## Song
-        if '_song' in args.keys():
-            self._song = args._song
+        ## Song (5 max)
+        if '_songs' in args.keys():
+            self._songs = args._songs
+            if len(self._songs) > 5:
+                self._songs = self._songs[:5]
         else:
-            self._song = config.DEFAULT_SONG
+            self._songs = [
+                config.DEFAULT_SONG, 
+                config.DEFAULT_SONG
+            ]
         
         ## Voice
         if '_voice' in args.keys():
@@ -45,30 +70,56 @@ class Valentunes:
             self._lang = twilio.Say.ENGLISH
                 
     def call(self):
-        
         global path
         
-        ## Generate Twilio message
+        ## Generate uniqid
+        uid = uuid.uuid4()
+
+        ## Header including change settings
+        head = "<?xml version='1.0' encoding='UTF-8' ?>\n<Gather action='/change?_uid=%s' method='GET'>\n" %uid
+        
+        ## Generate intro message
         r = twilio.Response()
         r.addSay(
             self._message,
             voice = self._voice,
             language = self._lang,
         )
-        r.addPlay(self._song)
-
-        ## Save message file
-        name = uuid.uuid4()
-        f = open("%s/data/%s" %(path, name), 'w')
-        f.write('<?xml version="1.0" encoding="UTF-8" ?>\n %s' %r)
+        f = open("%s/data/%s" %(path, uid), 'w')
+        f.write('%s%s' %(head, r))
         f.close()
 
-        ## Ring the phone
+        ## Generate menu message
+        r = twilio.Response()
+        r.addSay(
+            "This is a menu",
+            voice = self._voice,
+            language = self._lang,
+        )
+        f = open("%s/data/%s-menu" %(path, uid), 'w')
+        f.write('%s%s' %(head, r))        
+        f.close()
+        
+        ## Generate one message per song
+        i = 1
+        for s in self._songs:
+            r = twilio.Response()
+            r.addSay(
+                "This is a song",
+                voice = self._voice,
+                language = self._lang,
+            )
+            f = open("%s/data/%s-%s" %(path, uid, i), 'w')
+            f.write('%s%s' %(head, r))
+            f.close()
+            i += 1
+
+        ## Ring the phone with intro message
         account = twilio.Account(config.ACCOUNT_SID, config.ACCOUNT_TOKEN)
         d = {
             'From' : config.CALLER_ID,
             'To' : self._phone,
-            'Url' : config.ROOT + "/data/%s" %name,
+            'Url' : config.ROOT + "/data/%s" %uid,
         }
         try:
             request = account.request('/%s/Accounts/%s/Calls' %(config.API_VERSION, config.ACCOUNT_SID), 'POST', d)

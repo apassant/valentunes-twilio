@@ -7,10 +7,21 @@ sys.path.append("%s/" %path)
 import valentunes
 
 urls = (
-    '/.*', 'Caller',
+    '/call', 'Call',
+    '/change', 'Change',
 )
 
-class Caller:
+class Change:
+    def GET(self):
+        args = web.input()
+        ## Check required parameters
+        if '_uid' not in args.keys():
+            return "_uid parameter required (user ID)"
+        ## Go !
+        switch = valentunes.Switcher(args)
+        return switch.go()
+
+class Call:
     
     def GET(self):
         args = web.input()
