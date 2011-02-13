@@ -96,14 +96,19 @@ class Valentunes:
         f.write('%s%s' %(head, r))
         f.close()
 
-        ## Generate menu message
+        ## Generate menu message with list of songs
         r = twilio.Response()
+        i = 1
+        listing = ''
+        for s in self._songs:
+            listing += "Number %s. %s." %(i, s[0])
+            i += 1
         r.addGather(
             action = config.ROOT + '/cgi.py/change?_uid=%s' %uid,
             method = 'GET'
         ).append(
             twilio.Say(
-                "This is a menu",
+                "Here are your songs. %settings. Type a number to listen to one of them, star to go back to this menu and 0 for the introduction." %listing,
                 voice = self._voice,
                 language = self._lang,
             )
