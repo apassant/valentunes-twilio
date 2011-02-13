@@ -1,0 +1,16 @@
+curl -X POST -d 'data={
+  "to": "Julie",
+  "from" : "Alex",
+  "phone" : "XXX-XXX-XXXX",
+  "message" : "I love you",
+  "songs" : [
+    {
+      "title" : "One cool song for you",
+      "url" : "http://example.org/songs/cool.mp3"
+    },
+    {
+      "title" : "And another one",
+      "url" : "http://example.org/songs/more.wav"
+    }
+  ]
+}' http://example.org/endpoint/cgi.py/call
