@@ -6,6 +6,7 @@ sys.path.append("%s/" %path)
 
 import twilio
 import config
+import web
 
 class Switcher:
     
@@ -25,6 +26,7 @@ class Switcher:
                 f = open("%s/data/%s-menu" %(path, self._uid), 'r')
         else:
             f = open("%s/data/%s-menu" %(path, self._uid), 'r')
+        web.header("Content-Type","text/html; charset=utf-8")
         return ''.join(f.readlines())
     
 class Valentunes:
