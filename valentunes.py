@@ -55,10 +55,10 @@ class Valentunes:
         if len(self._songs) > 5:
             self._songs = self._songs[:5]
         
-        ##########
-        ## Message
-        ##########
-        self._message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(_to, _from)
+        ################
+        ## Intro message
+        ################
+        self._message = "Hello %s, this is %s." %(_to, _from)
         if 'message' in kwargs.keys():
             self._message += kwargs['message']
 
@@ -80,7 +80,7 @@ class Valentunes:
         ## XML header
         head = "<?xml version='1.0' encoding='utf-8' ?>\n"
 
-        #########################        
+        #########################
         ## Generate intro message
         #########################
         r = twilio.Response()
@@ -113,7 +113,7 @@ class Valentunes:
             timeout = 5
         ).append(
             twilio.Say(
-                "%s Type their number followed by the hash key to listen them, 9 to listen to this list, or 0 for the introduction." %listing,
+                "%s Type their number and the hash key to listen to them. Type 9 to listen to this list and 0 for the introduction message." %listing,
                 voice = self._voice,
             )
         )
