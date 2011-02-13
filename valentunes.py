@@ -8,6 +8,9 @@ import twilio
 import config
 import web
 
+#######################################
+## Switching between messages and songs
+#######################################
 class Switcher:
     
     def __init__(self, args):
@@ -17,39 +20,53 @@ class Switcher:
     def go(self):
         global path
         root = "%s/data/%s" %(path, self._uid)
+        ## Default file, intro message
         if self._digit == '0':
             f = open(root, 'r')
+        ## Songs files, or main menu is not exits
         elif self._digit in ['1', '2', '3', '4', '5']:
             _file = "%s-%s" %(root, self._digit)
             if os.path.exists(_file):
                 f = open(_file, 'r')
             else:
                 f = open("%s-menu" %root, 'r')
+        ## Menu file
         else:
             f = open("%s-menu" %root, 'r')
         web.header("Content-Type","text/html; charset=utf-8")
         return ''.join(f.readlines())
     
+################################
+## Valentunes wrapper for Twilio
+################################
 class Valentunes:
         
     def __init__(self, _phone, _songs, _from, _to, **kwargs):
         
+        ###############
         ## Phone number
+        ###############
         self._phone = _phone
 
+        ################
         ## Songs (5 max)
+        ################
         self._songs = _songs
         if len(self._songs) > 5:
             self._songs = self._songs[:5]
 
+        ##########
         ## Message
+        ##########
         message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(_to, _from)
         if '_msg' in kwargs['options'].keys():
             self._message = "%s %s" %(message, kwargs['options']['_msg'])
         else:
             self._message = message
 
-        ## Voice
+        #################
+        ## Optional voice
+        #################
         if '_voice' in kwargs['options'].keys():
             if kwargs['options']['_voice'] == 'woman':
                 self._voice = twilio.Say.WOMAN
@@ -62,45 +79,59 @@ class Valentunes:
         
         ## Generate uniqid
         uid = uuid.uuid4()
-
-        ## Header including change settings
-        head = "<?xml version='1.0' encoding='utf-8' ?>\n" %uid
         
+        ## XML header
+        head = "<?xml version='1.0' encoding='utf-8' ?>\n"
+
+        #########################        
         ## Generate intro message
+        #########################
         r = twilio.Response()
         r.addSay(
             self._message,
             voice = self._voice,
         )
+        ## Automatic redirect to the menu
         r.addRedirect(
             config.ROOT + "/data/%s-menu" %uid,
         )
+        ## Save Twilio message
         f = open("%s/data/%s" %(path, uid), 'w')
         f.write('%s%s' %(head, r))
         f.close()
 
+        ###########################################
         ## Generate menu message with list of songs
+        ###########################################
         r = twilio.Response()
         i = 1
         listing = ''
         for s in self._songs:
             listing += "Number %s: %s..." %(i, s[0])
             i += 1
+        ## Let user type in the song number (5 secs. delay)
         r.addGather(
             action = config.ROOT + '/cgi.py/change?_uid=%s' %uid,
             method = 'GET',
-            timeout = 10
+            timeout = 5
         ).append(
             twilio.Say(
-                "%s Type their number to listen them, 9 to listen to the list again, or 0 for the introduction." %listing,
+                "%s Type their number followed by the hash key to listen them, 9 to listen to this list, or 0 for the introduction." %listing,
                 voice = self._voice,
             )
         )
+        ## Redirect to first song if time-outs
+        r.addRedirect(
+            config.ROOT + "/data/%s-1" %uid,
+        )
+        ## Save Twilio message
         f = open("%s/data/%s-menu" %(path, uid), 'w')
         f.write('%s%s' %(head, r))
         f.close()
         
+        ################################
         ## Generate one message per song
+        ################################
         i = 1
         for s in self._songs:
             r = twilio.Response()
@@ -111,12 +142,25 @@ class Valentunes:
             ).append(
                 twilio.Play(s[1])
             )
+            ## Automated redirect to the next one, or to the first one
+            root = "%s/data/%s" %(path, uid)
+            _file = "%s-%s" %(root, i+1)
+            if os.path.exists(_file):
+                next = i+1
+            else:
+                next = 1
+            r.addRedirect(
+                config.ROOT + "/data/%s-%s" %(uid, next)
+            )
+            ## Save Twilio message
             f = open("%s/data/%s-%s" %(path, uid, i), 'w')
             f.write('%s%s' %(head, r))
             f.close()
             i += 1
 
+        ####################################
         ## Ring the phone with intro message
+        ####################################
         account = twilio.Account(config.ACCOUNT_SID, config.ACCOUNT_TOKEN)
         d = {
             'From' : config.CALLER_ID,
