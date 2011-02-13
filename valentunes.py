@@ -94,7 +94,7 @@ class Valentunes:
             language = self._lang,
         )
         r.addRedirect(
-            config.ROOT + "/data/%s-menu" %uid,,
+            config.ROOT + "/data/%s-menu" %uid,
         )
         f = open("%s/data/%s" %(path, uid), 'w')
         f.write('%s%s' %(head, r))
@@ -109,7 +109,8 @@ class Valentunes:
             i += 1
         r.addGather(
             action = config.ROOT + '/cgi.py/change?_uid=%s' %uid,
-            method = 'GET'
+            method = 'GET',
+            timeout = 10
         ).append(
             twilio.Say(
                 "%s Type their number to listen them, 9 to listen to the list again, or 0 for the introduction." %listing,
@@ -127,7 +128,8 @@ class Valentunes:
             r = twilio.Response()
             r.addGather(
                 action = config.ROOT + '/cgi.py/change?_uid=%s' %uid,
-                method = 'GET'
+                method = 'GET',
+                timeout = 10
             ).append(
                 twilio.Play(s[1])
             )
