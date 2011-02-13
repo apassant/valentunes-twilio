@@ -16,21 +16,37 @@ class Caller:
     
     def call(self, args):
         
-        ## Get mandatory parameters
+        ## Mandatory parameters
         _to = args._to
         _from = args._from
         _phone = args._phone
 
-        ## Get song URL
+        ## Song
         if '_song' in args.keys():
             _song = args._song
         else:
             _song = config.DEFAULT_SONG
         
-        _voice = twilio.Say.MAN
-        _lang = twilio.Say.ENGLISH
+        ## Voice
+        if '_voice' in args.keys():
+            if args._voice == 'woman':
+                _voice = twilio.Say.WOMAN
+        else:
+            _voice = twilio.Say.MAN
 
-        ## Generate twilio message
+        ## Lang
+        if '_lang' in args.keys():
+            if args._lang == 'es':
+                _lang = twilio.Say.ENGLISH
+            if args._lang == 'fr':
+                _lang = twilio.Say.FRENCH
+            if args._lang == 'de':
+                _lang = twilio.Say.GERMAN
+        else:
+            _lang = twilio.Say.ENGLISH
+                    
+
+        ## Generate Twilio message
         r = twilio.Response()
         r.addSay("Hello %s, this is %s. I got a song for you, happy Valentine's day !" %(_to, _from), 
             voice = _voice, 
