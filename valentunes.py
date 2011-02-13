@@ -89,12 +89,12 @@ class Valentunes:
         ## Generate intro message
         r = twilio.Response()
         r.addSay(
-                self._message,
-                voice = self._voice,
-                language = self._lang,
-            ).addRedirect(
-                config.ROOT + '/cgi.py/change?_uid=%s&Digits=*' %uid,
-            )
+            self._message,
+            voice = self._voice,
+            language = self._lang,
+        )
+        r.addRedirect(
+            config.ROOT + '/cgi.py/change?_uid=%s&Digits=*' %uid,
         )
         f = open("%s/data/%s" %(path, uid), 'w')
         f.write('%s%s' %(head, r))
