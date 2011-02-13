@@ -49,8 +49,8 @@ class Valentunes:
                 self._songs = self._songs[:5]
         else:
             self._songs = [
-                config.DEFAULT_SONG, 
-                config.DEFAULT_SONG
+                (config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG),
+                (config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG),
             ]
         
         ## Voice
@@ -120,7 +120,7 @@ class Valentunes:
                 action = config.ROOT + '/cgi.py/change?_uid=%s' %uid,
                 method = 'GET'
             ).append(
-                twilio.Play(s)
+                twilio.Play(s[1])
             )
             f = open("%s/data/%s-%s" %(path, uid, i), 'w')
             f.write('%s%s' %(head, r))
