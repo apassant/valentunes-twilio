@@ -16,16 +16,17 @@ class Switcher:
         
     def go(self):
         global path
+        root = "%s/data/%s" %(path, self._uid)
         if self._digit == '0':
-            f = open("%s/data/%s" %(path, self._uid), 'r')
+            f = open(root, 'r')
         elif self._digit in ['1', '2', '3', '4', '5']:
-            _file = "%s/data/%s-%s" %(path, self._uid, self._digit)
+            _file = "%s-%s" %(root, self._digit)
             if os.path.exists(_file):
                 f = open(_file, 'r')
             else:
-                f = open("%s/data/%s-menu" %(path, self._uid), 'r')
+                f = open("%s-menu" %(root, self._uid), 'r')
         else:
-            f = open("%s/data/%s-menu" %(path, self._uid), 'r')
+            f = open("%s-menu" %(root, self._uid), 'r')
         web.header("Content-Type","text/html; charset=utf-8")
         return ''.join(f.readlines())
     
@@ -36,7 +37,7 @@ class Valentunes:
         self._phone = args._phone
 
         ## Message
-        message = "Hello %s, this is %s. Here is a song for you, happy Valentine's day !" %(args._to, args._from)
+        message = "Hello %s, this is %s. Here are some song for you, happy Valentine's day !" %(args._to, args._from)
         if '_msg' in args.keys():
             self._message = "%s %s" %(message, args._msg)
         else:
@@ -101,14 +102,14 @@ class Valentunes:
         i = 1
         listing = ''
         for s in self._songs:
-            listing += "Number %s. %s." %(i, s[0])
+            listing += "Number %s: %s..." %(i, s[0])
             i += 1
         r.addGather(
             action = config.ROOT + '/cgi.py/change?_uid=%s' %uid,
             method = 'GET'
         ).append(
             twilio.Say(
-                "Here are your songs. %settings. Type a number to listen to one of them, star to go back to this menu and 0 for the introduction." %listing,
+                "%settings. Type a number to listen them, star to go back to the list or 0 for the introduction." %listing,
                 voice = self._voice,
                 language = self._lang,
             )
