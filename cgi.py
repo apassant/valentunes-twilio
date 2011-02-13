@@ -1,5 +1,6 @@
 import os, sys
 import web
+import simplejson
 
 path = os.path.dirname(__file__)
 sys.path.append("%s/" %path)
@@ -24,33 +25,41 @@ class Change:
 
 class Call:
     
-    def GET(self):
+    def POST(self):
         args = web.input()
+        
+        ## Get data
+        if 'data' in args.keys():
+            
+            ## Parse JSON
+            data = simplejson.loads(args['data'])
+            
+            ## Required parameters
+            if 'to' not in data.keys():
+                return "to parameter required (name of the person you want to call)"
+            _to = data['to']
+            if 'from' not in data.keys():
+                return "from parameter required (your name)"
+            _from = data['from']
+            if 'phone' not in data.keys():
+                return "phone parameter required (phone number to ring)"
+            _phone = data['phone']
+            if 'songs' not in data.keys():
+                return "songs parameter required (list of songs)"
+            _songs = data['songs']
+            
+            ## Additional parameters
+            _message = ''
+            if 'message' in args.keys():
+                _message = data['message']
+            _voice = 'man'
+            if 'voice' in args.keys():
+                _voice = data['voice']
 
-        ## Check required parameters
-        if '_to' not in args.keys():
-            return "_to parameter required (name of the person you want to call)"
-        if '_from' not in args.keys():
-            return "_from parameter required (your name)"
-        if '_phone' not in args.keys():
-            return "_phone parameter required (phone number to ring)"
+            ## Go !
+            return valentunes.Valentunes(_phone, _songs, _from, _to, message = _message, voice = _voice).call()
 
-        ## No songs ?
-        if '_songs' not in args.keys():
-            songs = [(config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG),
-                       (config.DEFAULT_SONG_TITLE, config.DEFAULT_SONG)]
         else:
-            songs = args._songs
-
-        ## Additional parameters
-        options = {}
-        if '_msg' in args.keys():
-            options['_msg'] = args._msg
-        if '_voice' in args.keys():
-            options['_voice'] = args._voice
-
-        ## Go !
-        val = valentunes.Valentunes(args._phone, songs, args._from, args._to, options = options)
-        return val.call()
+            return "KO"
 
 application = web.application(urls, globals()).wsgifunc()
