@@ -23,7 +23,7 @@ class Caller:
 
         ## Custom message
         if '_msg' in args.keys():
-            _msg = args._phone
+            _msg = args._msg
 
         ## Song
         if '_song' in args.keys():
