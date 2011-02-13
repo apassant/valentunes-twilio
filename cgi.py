@@ -40,7 +40,7 @@ class Call:
         else:
             songs = args._songs
         ## Go !
-        val = valentunes.Valentunes(args._from, args._to, args._phone, songs, args)
+        val = valentunes.Valentunes(args._from, args._to, songs, args._phone, args)
         val.call()
 
 application = web.application(urls, globals()).wsgifunc()
