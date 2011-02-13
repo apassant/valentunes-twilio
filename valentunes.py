@@ -112,7 +112,7 @@ class Valentunes:
             method = 'GET'
         ).append(
             twilio.Say(
-                "%settings. Type their number to listen them, 9 to listen to the list again, or 0 for the introduction." %listing,
+                "%s Type their number to listen them, 9 to listen to the list again, or 0 for the introduction." %listing,
                 voice = self._voice,
                 language = self._lang,
             )
