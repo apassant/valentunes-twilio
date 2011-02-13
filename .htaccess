@@ -1,3 +1,7 @@
+Options -Indexes
+<Files config.py>
+    Deny From All
+</Files>
 <Files cgi.py>
     SetHandler wsgi-script
     Options ExecCGI FollowSymLinks
