@@ -94,7 +94,7 @@ class Valentunes:
             language = self._lang,
         )
         r.addRedirect(
-            config.ROOT + '/cgi.py/change?_uid=%s&amp;Digits=*' %uid,
+            config.ROOT + '/cgi.py/change?_uid=%s&amp;Digits=9' %uid,
         )
         f = open("%s/data/%s" %(path, uid), 'w')
         f.write('%s%s' %(head, r))
