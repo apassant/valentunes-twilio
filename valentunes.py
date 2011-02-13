@@ -91,7 +91,7 @@ class Valentunes:
             )
         )
         f = open("%s/data/%s" %(path, uid), 'w')
-        f.write('%s%s</Gather>' %(head, r))
+        f.write('%s%s' %(head, r))
         f.close()
 
         ## Generate menu message
@@ -107,7 +107,7 @@ class Valentunes:
             )
         )
         f = open("%s/data/%s-menu" %(path, uid), 'w')
-        f.write('%s%s</Gather>' %(head, r))        
+        f.write('%s%s' %(head, r))        
         f.close()
         
         ## Generate one message per song
@@ -125,7 +125,7 @@ class Valentunes:
                 )
             )
             f = open("%s/data/%s-%s" %(path, uid, i), 'w')
-            f.write('%s%s</Gather>' %(head, r))
+            f.write('%s%s' %(head, r))
             f.close()
             i += 1
 
