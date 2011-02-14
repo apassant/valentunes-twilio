@@ -50,10 +50,10 @@ class Call:
             
             ## Additional parameters
             _message = ''
-            if 'message' in args.keys():
+            if 'message' in data.keys():
                 _message = data['message']
             _voice = 'man'
-            if 'voice' in args.keys():
+            if 'voice' in data.keys():
                 _voice = data['voice']
 
             ## Go !

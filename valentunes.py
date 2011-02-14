@@ -66,9 +66,11 @@ class Valentunes:
         ## Voice
         #################
         self._voice = twilio.Say.MAN
+        self._args = kwargs
+
         if 'voice' in kwargs.keys():
             if kwargs['voice'] == 'woman':
-                self._voice = twilio.Say.WOMAN            
+                self._voice = twilio.Say.WOMAN
                 
     def call(self):
         
